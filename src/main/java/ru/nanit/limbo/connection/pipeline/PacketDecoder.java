@@ -25,6 +25,9 @@ public class PacketDecoder extends MessageToMessageDecoder<ByteBuf> {
         int packetId = msg.readVarInt();
         Packet packet = mappings.getPacket(packetId);
 
+        Logger.info(packet);
+        Logger.info(packetId);
+
         if (packet != null){
             try {
                 packet.decode(msg);

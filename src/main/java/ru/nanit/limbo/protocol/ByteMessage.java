@@ -45,6 +45,7 @@ public class ByteMessage extends ByteBuf {
             if ((k & 0x80) != 128) {
                 return i;
             }
+            System.out.println("int: " + i);
         }
 
         throw new IllegalArgumentException("Cannot read VarInt");
@@ -59,6 +60,7 @@ public class ByteMessage extends ByteBuf {
 
             buf.writeByte(value & 0x7F | 0x80);
             value >>>= 7;
+            System.out.println("val: " + value);
         }
     }
 
@@ -76,6 +78,7 @@ public class ByteMessage extends ByteBuf {
         int size = ByteBufUtil.utf8Bytes(str);
         writeVarInt(size);
         buf.writeCharSequence(str, StandardCharsets.UTF_8);
+        System.out.println("String" + str);
     }
 
     public byte[] readBytesArray(){

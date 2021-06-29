@@ -1,5 +1,5 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
     id 'java'
 }
 
@@ -10,22 +10,24 @@ repositories {
     mavenCentral()
 }
 
-configurations {
-    someconfig
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile files('libs/napi-configurate-yaml-1.0.jar')
+    compile group: 'org.yaml', name: 'snakeyaml', version: '1.27'
+    compile group: 'io.netty', name: 'netty-all', version: '4.1.54.Final'
+    compile group: 'net.kyori', name: 'adventure-nbt', version: '4.1.1'
 }
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.0-M1'
-    someconfig files('libs/napi-configurate-yaml-1.0.jar')
-    someconfig group: 'org.yaml', name: 'snakeyaml', version: '1.29'
-    someconfig group: 'io.netty', name: 'netty-all', version: '4.1.65.Final'
-    someconfig group: 'net.kyori', name: 'adventure-nbt', version: '4.8.1'
-}
 jar {
     manifest {
         attributes('Main-Class': 'ru.nanit.limbo.NanoLimbo')
     }
 }
+
+tasks.withType( JavaCompile ).configureEach {
+    options.forkOptions.jvmArgs.addAll( ['--add-opens', 'jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED'] )
+}
+
 
 shadowJar{
     minimize()
